@@ -59,7 +59,11 @@ class MainController extends Controller
             'method_id' => $request->input('method_id'),
         ];
 
-        $this->refundRepository->createRefund($data);
+        $refund = $this->refundRepository->createRefund($data);
+
+        if($refund == 'error_multiple_request'){
+            return back()->with('error', 'Multiple Request!');
+        }
 
         return back()->with('message', 'Data Refund Created!');
     }
@@ -98,6 +102,12 @@ class MainController extends Controller
         $this->refundRepository->updateRefund($id, $data);
 
         return redirect()->route('homepage')->with('message', 'Refund Data Updated!');
+    }
+
+    public function markDone(Request $request, $id){
+        $this->refundRepository->markDone($id);
+
+        return back()->with('message', 'Refund Status Done!');
     }
 
     /**

@@ -7,7 +7,7 @@ use App\Models\Refund;
 
 class RefundRepository implements RefundRepositoryInterface{
     public function getAllRefund(){
-        return Refund::paginate(5);
+        return Refund::orderBy('id', 'desc')->paginate(5);
     }
     
     public function refundDetail($id){
@@ -21,6 +21,12 @@ class RefundRepository implements RefundRepositoryInterface{
     }
 
     public function createRefund($data){
+        $refund = Refund::where('user_id', $data['user_id'])->where('status', false)->first();
+
+        if($refund){
+            return 'error_multiple_request';
+        }
+
         return Refund::create($data);
     }
 
@@ -38,5 +44,11 @@ class RefundRepository implements RefundRepositoryInterface{
 
     public function deleteRefund($id){
         return Refund::where('id', $id)->delete();
+    }
+
+    public function markDone($id){
+        return Refund::where('id', $id)->update([
+            'status' => true
+        ]);
     }
 }

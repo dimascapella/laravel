@@ -23,6 +23,11 @@
                             {{ session('message') }}
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <form action="{{ route('create_refund') }}" method="post">
                         @csrf
                         <div class="row mb-3">
@@ -69,6 +74,7 @@
                                     <th>Divisi</th>
                                     <th>Nominal</th>
                                     <th>Metode</th>
+                                    <th>Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -81,15 +87,22 @@
                                             <td>{{ $refund->user->division->division_name }}</td>
                                             <td>Rp. {{ number_format($refund->amount, 0, ".", ".") }}</td>
                                             <td>{{ $refund->method->method_name }}</td>
+                                            <td>{{ $refund->status == 0 ? 'Pending' : 'Success'}}</td>
                                             <td>
-                                                <div class="d-flex gap-2">
-                                                    <a href="{{ route('edit_refund', $refund->id) }}" class="btn btn-outline-secondary">Edit</a>
-                                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('delete_refund', $refund->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-outline-danger">Delete</button>
-                                                    </form>
-                                                </div>
+                                                @if ($refund->status == 0)
+                                                    <div class="d-flex gap-2">
+                                                        <a href="{{ route('edit_refund', $refund->id) }}" class="btn btn-outline-secondary">Edit</a>
+                                                        <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('delete_refund', $refund->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-outline-danger">Delete</button>
+                                                        </form>
+                                                        <form action="{{ route('mark_refund', $refund->id) }}" method="POST">
+                                                            @csrf
+                                                            <button class="btn btn-success">Mark Done</button>
+                                                        </form>
+                                                    </div>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

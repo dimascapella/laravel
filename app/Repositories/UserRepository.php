@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface{
     public function getAllUser(){
-        return User::paginate(5);
+        return User::orderBy('id', 'desc')->paginate(5);
     }
 
     public function createUser($data){

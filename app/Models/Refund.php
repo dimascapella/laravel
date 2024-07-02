@@ -14,7 +14,8 @@ class Refund extends Model
     protected $fillable = [
         'amount',
         'user_id',
-        'method_id'
+        'method_id',
+        'status'
     ];
 
     public function user()

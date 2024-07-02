@@ -16,6 +16,7 @@ use App\Http\Controllers\MainController;
 
 Route::get('/', [MainController::class, 'homepage'])->name('homepage');
 Route::post('/refund', [MainController::class, 'postRefund'])->name('create_refund');
+Route::post('/refund/{id}/done', [MainController::class, 'markDone'])->name('mark_refund');
 Route::get('/refund/{id}', [MainController::class, 'editRefund'])->name('edit_refund');
 Route::put('/refund/{id}', [MainController::class, 'updateRefund'])->name('update_refund');
 Route::delete('/refund/{id}', [MainController::class, 'deleteRefund'])->name('delete_refund');

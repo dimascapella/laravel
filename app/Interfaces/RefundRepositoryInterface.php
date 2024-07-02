@@ -8,4 +8,5 @@ interface RefundRepositoryInterface{
     public function createRefund($data);
     public function updateRefund($id, $data);
     public function deleteRefund($id);
+    public function markDone($id);
 }
